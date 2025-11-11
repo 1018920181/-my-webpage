@@ -1,0 +1,171 @@
+<!--
+ * @Author: error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
+ * @Date: 2025-10-08 05:35:49
+ * @LastEditors: error: error: git config user.name & please set dead value or install git && error: git config user.email & please set dead value or install git & please set dead value or install git
+ * @LastEditTime: 2025-10-08 06:27:34
+ * @FilePath: \1\1.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录/注册</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #81b5f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        #app {
+            background: rgb(236, 234, 234);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        input {
+            margin-bottom: 10px;
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .switch {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        .error {
+            color: #dc3545;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1 id="title">登录</h1>
+        <form id="form">
+            <div id="register-fields" style="display: none;">
+                <label for="email">邮箱:</label>
+                <input type="email" id="email" name="email"><br><br>
+            </div>
+            <label for="username">用户名:</label>
+            <input type="text" id="username" name="username" required><br><br>
+            <label for="password">密码:</label>
+            <input type="password" id="password" name="password" required><br><br>
+            <button type="submit" id="submit-btn">登录</button>
+            <div class="switch">
+                <span id="switch-text">没有账号？</span>
+                <a href="#" id="switch-link">注册</a>
+            </div>
+            <div id="error" class="error"></div>
+        </form>
+        <li><a href="http://127.0.0.1:3000/second/2.html?serverWindowId=89d00d8a-b9f6-4e2c-93fd-19a953f1f60f">忘记密码</a></li>
+        <li><a href="http://127.0.0.1:3000/shere/3.html?serverWindowId=89d00d8a-b9f6-4e2c-93fd-19a953f1f60f">找回密码</a></li>
+    </div>
+
+    <script>
+        // Supabase 配置
+        const supabaseUrl = 'https://ndaihkkqwvvjbnlbygek.supabase.co'; // 替换为您的 Supabase URL
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kYWloa2txd3Z2amJubGJ5Z2VrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI4NjUwNDgsImV4cCI6MjA3ODQ0MTA0OH0.H0uJt-9dP2f-B9uNIOeD04jR4T5bwnJ5xr87egLkvkU'; // 替换为您的 Supabase Public API Key
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+        const form = document.getElementById('form');
+        const title = document.getElementById('title');
+        const submitBtn = document.getElementById('submit-btn');
+        const switchLink = document.getElementById('switch-link');
+        const switchText = document.getElementById('switch-text');
+        const registerFields = document.getElementById('register-fields');
+        const errorDiv = document.getElementById('error');
+
+        let isLogin = true; // 当前是登录模式还是注册模式
+
+        // 切换登录/注册模式
+        switchLink.addEventListener('click', function (event) {
+            event.preventDefault();
+            isLogin = !isLogin;
+            if (isLogin) {
+                title.textContent = '登录';
+                submitBtn.textContent = '登录';
+                switchText.textContent = '没有账号？';
+                switchLink.textContent = '注册';
+                registerFields.style.display = 'none';
+            } else {
+                title.textContent = '注册';
+                submitBtn.textContent = '注册';
+                switchText.textContent = '已有账号？';
+                switchLink.textContent = '登录';
+                registerFields.style.display = 'block';
+            }
+            errorDiv.textContent = ''; // 清空错误信息
+        });
+
+        // 表单提交
+        form.addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const email = document.getElementById('email').value;
+
+            if (isLogin) {
+                // 登录逻辑
+                const { data, error } = await supabase
+                    .from('users')
+                    .select('*')
+                    .eq('email', email)
+                    .eq('password', password);
+
+                if (error) {
+                    errorDiv.textContent = '登录失败，请重试！';
+                } else if (data.length > 0) {
+                    alert('登录成功！');
+                    window.open('https://hao.360.com/?hj=llq2c', '_blank');
+                } else {
+                    errorDiv.textContent = '用户名或密码错误！';
+                }
+            } else {
+                // 注册逻辑
+                const { data, error } = await supabase
+                    .from('users')
+                    .insert([{ username, email, password }]);
+
+                if (error) {
+                    errorDiv.textContent = '注册失败，请重试！';
+                } else {
+                    alert('注册成功！');
+                    isLogin = true;
+                    title.textContent = '登录';
+                    submitBtn.textContent = '登录';
+                    switchText.textContent = '没有账号？';
+                    switchLink.textContent = '注册';
+                    registerFields.style.display = 'none';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
