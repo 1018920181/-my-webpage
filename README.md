@@ -1,5 +1,5 @@
-
-<仓库管理lang="zh-CN">
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -64,7 +64,7 @@
         <p>
             仓库管理系统是一款高效、智能的解决方案，帮助您轻松管理库存、优化仓库操作、提高生产效率。无论是小型企业还是大型仓库，我们的系统都能满足您的需求，提供实时数据分析和自动化流程，让您的仓库管理更加简单、便捷。
         </p>
-        <button class="button" onclick="window.location.href='/login'">登录</button>
+        <button class="button" onclick="window.location.href='1.html'">登录</button>
     </div>
 </body>
 </html>
