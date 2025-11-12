@@ -74,7 +74,7 @@
                 <input type="email" id="email" name="email"><br><br>
             </div>
             <label for="username">用户名:</label>
-            <input type="text" id="username" name="username" required><br><br>
+            <输入 类型="文本" id="用户名" 名称="用户名" 必填><换行><换行>
             <label for="password">密码:</label>
             <input type="password" id="password" name="password" required><br><br>
             <button type="submit" id="submit-btn">登录</button>
@@ -137,7 +137,7 @@
     const { data: userData, error: userError } = await supabase
       .from('users')
       .select('*')
-      .eq('email', email);
+      .or(`username.eq.${username},email.eq.${email}`); // 检查用户名或邮箱
 
     if (userError) {
       errorDiv.textContent = '登录失败，请重试！';
@@ -176,6 +176,7 @@
 </body>
 
 </html>
+
 
 
 
