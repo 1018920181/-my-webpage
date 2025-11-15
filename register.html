@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        .register-form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        .register-form h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .register-form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .register-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .register-form button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-form">
+        <h2>注册</h2>
+        <form id="registerForm">
+            <input type="text" id="username" placeholder="用户名" required>
+           
+            <input type="password" id="password" placeholder="密码" required>
+            <button type="submit">注册</button>
+        </form>
+    </div>
+
+    <!-- 引入 Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // 初始化 Supabase
+        const supabaseUrl = 'https://ndaihkkqwvvjbnlbygek.supabase.co';
+        const supabaseKey = 'sb_secret_jDwAuhb_d1n2qFblVoRcVg_Amu7s5-M';
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+        document.getElementById('registerForm').addEventListener('submit', async function (event) {
+            event.preventDefault(); // 阻止表单默认提交行为
+
+            // 获取用户输入
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // 发送数据到 Supabase
+            const { data, error } = await supabase
+                .from('users')
+                .insert([{ username, email, password }]);
+
+            if (error) {
+                alert('注册失败: ' + error.message);
+            } else {
+                // 注册成功后跳转到指定页面
+                window.location.href = "https://coze-user-file.tos-cn-beijing.volces.com/3713520766835100/7561489896448983055/1_16.html?X-Tos-Algorithm=TOS4-HMAC-SHA256&X-Tos-Credential=AKLTNjU0ZGJiM2IyN2E1NGExZWFiMDdmMzQ1NTAzZjlhOGU%2F20251115%2Fcn-beijing%2Ftos%2Frequest&X-Tos-Date=20251115T185902Z&X-Tos-Expires=604800&X-Tos-Signature=74808753c5bf5e12c95394940b31251856ccd7018538fb4e83d98f57edb90c53&X-Tos-SignedHeaders=host";
+            }
+        });
+    </script>
+</body>
+</html>
