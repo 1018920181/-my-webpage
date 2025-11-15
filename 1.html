@@ -74,7 +74,7 @@
                 <input type="email" id="email" name="email"><br><br>
             </div>
             <label for="username">用户名:</label>
-            <输入 类型="文本" id="用户名" 名称="用户名" 必填><换行><换行>
+            <input type="text" id="username" name="username" required><br><br>
             <label for="password">密码:</label>
             <input type="password" id="password" name="password" required><br><br>
             <button type="submit" id="submit-btn">登录</button>
@@ -84,14 +84,14 @@
             </div>
             <div id="error" class="error"></div>
         </form>
-        <li><a href="https://1018920181.github.io/-my-webpage/2.html">忘记密码</a></li>
-        <li><a href="https://1018920181.github.io/-my-webpage/3.html">找回密码</a></li>
+        <li><a href="http://127.0.0.1:3000/second/2.html?serverWindowId=89d00d8a-b9f6-4e2c-93fd-19a953f1f60f">忘记密码</a></li>
+        <li><a href="http://127.0.0.1:3000/shere/3.html?serverWindowId=89d00d8a-b9f6-4e2c-93fd-19a953f1f60f">找回密码</a></li>
     </div>
 
     <script>
         // Supabase 配置
         const supabaseUrl = 'https://ndaihkkqwvvjbnlbygek.supabase.co'; // 替换为您的 Supabase URL
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5kYWloa2txd3Z2amJubGJ5Z2VrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI4NjUwNDgsImV4cCI6MjA3ODQ0MTA0OH0.H0uJt-9dP2f-B9uNIOeD04jR4T5bwnJ5xr87egLkvkU'; // 替换为您的 Supabase Public API Key
+        const supabaseKey = 'sb_publishable_aVS25Xk44HIwBpgtrnRh3Q_r4HufwI_'; // 替换为您的 Supabase Public API Key
         const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
         const form = document.getElementById('form');
@@ -137,7 +137,7 @@
     const { data: userData, error: userError } = await supabase
       .from('users')
       .select('*')
-      .or(`username.eq.${username},email.eq.${email}`); // 检查用户名或邮箱
+      .eq('email', email);
 
     if (userError) {
       errorDiv.textContent = '登录失败，请重试！';
@@ -174,9 +174,4 @@
 });
     </script>
 </body>
-
 </html>
-
-
-
-
