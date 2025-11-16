@@ -36,13 +36,13 @@
                     <div class="card-header">
                         <h3>电子配件管理</h3>
                     </div>
-                    <div class="card-body">
-                        <form id="addPartForm">
-                            <div class="mb-3">
-                                <label for="partName" class="form-label">配件名称</label>
-                                <input type="text" class="form-control" id="partName" required>
+                    <div 类="card-body">
+                        <表单 id="添加部件表单">
+                             
+                                <label for="配件名称" class="form-label">配件名称</label>
+                                <输入 类型="文本" 类="表单控制" id="部件名称" 必填>
                             </div>
-                            <div class="mb-3">
+                             
                                 <label for="partModel" class="form-label">型号</label>
                                 <input type="text" class="form-control" id="partModel" required>
                             </div>
@@ -97,8 +97,8 @@
         </div>
     </div>
     <script>
-        const supabaseUrl = 'https://your-supabase-url.supabase.co';
-        const supabaseKey = 'your-supabase-key';
+        const supabaseUrl = 'https://ndaihkkqwvvjbnlbygek.supabase.co';
+        const supabaseKey = 'sb_secret_jDwAuhb_d1n2qFblVoRcVg_Amu7s5-M';
         const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
         // 添加配件
@@ -164,4 +164,5 @@
         fetchParts();
     </script>
 </body>
+
 </html>
