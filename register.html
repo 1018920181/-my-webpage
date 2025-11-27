@@ -12,19 +12,28 @@
         const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
         async function register() {
+            console.log('注册函数被调用'); // 调试信息
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
+            console.log('用户名:', username, '密码:', password); // 调试信息
 
             const { data, error } = await supabase
                 .from('users')
                 .insert([{ username, password }]);
 
+            console.log('插入结果:', data, '错误:', error); // 调试信息
+
             if (error) {
                 alert('注册失败: ' + error.message);
             } else {
                 alert('注册成功！');
-                window.location.href = 'login.html'; // 跳转到登录页面
+                window.location.href = 'login.html';
             }
+        }
+
+        // 返回登录页面
+        function returnToLogin() {
+            window.location.href = 'login.html';
         }
     </script>
     <style>
@@ -41,6 +50,10 @@
             text-align: center;
         }
         .btn-primary {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .btn-secondary {
             width: 100%;
         }
     </style>
@@ -64,6 +77,7 @@
                                 <input type="password" class="form-control" id="password" required>
                             </div>
                             <button type="submit" class="btn btn-primary">注册</button>
+                            <button type="button" class="btn btn-secondary" onclick="returnToLogin()">返回登录</button>
                         </form>
                     </div>
                 </div>
