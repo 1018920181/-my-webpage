@@ -8,23 +8,69 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script>
         const supabaseUrl = 'https://ndaihkkqwvvjbnlbygek.supabase.co';
-        const supabaseKey = 'sb_publishable_aVS25Xk44HIwBpgtrnRh3Q_r4HufwI_';
-        const supabase = supabase.createClient(https://ndaihkkqwvvjbnlbygek.supabase.co,sb_publishable_aVS25Xk44HIwBpgtrnRh3Q_r4HufwI_);
+        const supabaseKey = 'sb_secret_jDwAuhb_d1n2qFblVoRcVg_Amu7s5-M';
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-        async function login() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+        // 检查账户是否重复
+        async function checkAccount() {
+            const account = document.getElementById('account').value;
+            const accountRegex = /^[a-zA-Z0-9_]+$/; // 英文字母、数字及下划线
+            const accountStatus = document.getElementById('account-status');
+
+            if (!accountRegex.test(account)) {
+                accountStatus.innerHTML = '❌ 账户格式错误（需为英文字母加数字及下划线）';
+                accountStatus.style.color = 'red';
+                return false;
+            }
 
             const { data, error } = await supabase
                 .from('users')
-                .select('*')
-                .eq('username', username)
-                .eq('password', password);
+                .select('account')
+                .eq('account', account);
 
-            if (error || data.length === 0) {
-                alert('登录失败: 用户名或密码错误');
+            if (error) {
+                accountStatus.innerHTML = '❌ 检查失败: ' + error.message;
+                accountStatus.style.color = 'red';
+                return false;
+            } else if (data.length > 0) {
+                accountStatus.innerHTML = '❌ 账户已存在，请修改';
+                accountStatus.style.color = 'red';
+                return false;
             } else {
-                window.location.href = 'warehouse.html'; // 跳转到仓库管理页面
+                accountStatus.innerHTML = '✅ 账户可用';
+                accountStatus.style.color = 'green';
+                return true;
+            }
+        }
+
+        // 登录逻辑
+        async function login() {
+            const account = document.getElementById('account').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // 检查账户是否重复
+            const isAccountValid = await checkAccount();
+            if (!isAccountValid) {
+                alert('请检查账户是否可用！');
+                return;
+            }
+
+            // 登录逻辑
+            const { data, error } = await supabase
+                .from('users')
+                .select('*')
+                .eq('account', account)
+                .eq('password', password)
+                .single();
+
+            if (error) {
+                alert('登录失败: ' + error.message);
+            } else if (data) {
+                alert('登录成功！');
+                window.location.href = 'warehouse.html';
+            } else {
+                alert('账户或密码错误！');
             }
         }
     </script>
@@ -44,6 +90,10 @@
         .btn-primary {
             width: 100%;
         }
+        #account-status {
+            font-size: 14px;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
@@ -57,7 +107,12 @@
                     <div class="card-body">
                         <form onsubmit="event.preventDefault(); login();">
                             <div class="mb-3">
-                                <label for="username" class="form-label">用户名</label>
+                                <label for="account" class="form-label">账户（英文字母加数字及下划线）</label>
+                                <input type="text" class="form-control" id="account" required oninput="checkAccount()">
+                                <div id="account-status"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="username" class="form-label">用户名（随意填写）</label>
                                 <input type="text" class="form-control" id="username" required>
                             </div>
                             <div class="mb-3">
@@ -66,17 +121,10 @@
                             </div>
                             <button type="submit" class="btn btn-primary">登录</button>
                         </form>
-                        <div class="mt-3 text-center">
-                            <a href="register.html">没有账号？立即注册</a>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </body>
-
 </html>
-
-
-
