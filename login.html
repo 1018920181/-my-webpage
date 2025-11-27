@@ -1,68 +1,68 @@
-
- 
-<头>
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>登录页面</title>
-    <链接 链接="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="样式表">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-    <脚本>
-        常量 supabaseUrl = 'https://ndaihkkqwvvjbnlbygek.supabase.co';
-        常量 supabaseKey = 'sb_publishable_aVS25Xk44HIwBpgtrnRh3Q_r4HufwI_';
-        常量 supabase = supabase.createClient(supabaseUrl, supabaseKey);
+    <script>
+        const supabaseUrl = 'https://ndaihkkqwvvjbnlbygek.supabase.co';
+        const supabaseKey = 'sb_publishable_aVS25Xk44HIwBpgtrnRh3Q_r4HufwI_';
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
         // 检查账户是否重复
-        异步 函数 检查账户() {
-            常量 账户 = 文档.通过ID获取元素('账户').值;
-            常量 账户正则表达式 = /^[a-zA-Z0-9_]+$/; // 英文字母、数字及下划线
-            常量 账户状态 = 文档.通过ID获取元素('账户状态');
+        async function checkAccount() {
+            const account = document.getElementById('account').value;
+            const accountRegex = /^[a-zA-Z0-9_]+$/; // 英文字母、数字及下划线
+            const accountStatus = document.getElementById('account-status');
 
-            如果 (!accountRegex.测试(账户)) {
+            if (!accountRegex.test(account)) {
                 accountStatus.innerHTML = '❌ 账户格式错误（需为英文字母加数字及下划线）';
-                账户状态.样式.颜色 = '红色';
-                返回 假;
+                accountStatus.style.color = 'red';
+                return false;
             }
 
-            常量 { 数据, 错误 } = 等待 supabase
-                .来自('用户')
-                .选择('账户')
-                .等('账户', 账户);
+            const { data, error } = await supabase
+                .from('users')
+                .select('account')
+                .eq('account', account);
 
-            如果 (错误) {
+            if (error) {
                 accountStatus.innerHTML = '❌ 检查失败: ' + error.message;
-                账户状态.样式.颜色 = '红色';
-                返回 假;
-            } 否则 如果 (数据.长度 > 0) {
+                accountStatus.style.color = 'red';
+                return false;
+            } else if (data.length > 0) {
                 accountStatus.innerHTML = '❌ 账户已存在，请修改';
-                账户状态.样式.颜色 = '红色';
-                返回 假;
-            } 否则 {
-                账户状态.内联样式 = '✅ 账户可用';
-                账户状态.样式.颜色 = '绿色';
-                返回 真;
+                accountStatus.style.color = 'red';
+                return false;
+            } else {
+                accountStatus.innerHTML = '✅ 账户可用';
+                accountStatus.style.color = 'green';
+                return true;
             }
         }
 
         // 登录逻辑
-        异步 函数 登录() {
-            常量 账户 = 文档.通过ID获取元素('账户').值;
-            常量 用户名 = 文档.通过ID获取元素('用户名').值;
-            常量 密码 = 文档.通过ID获取元素('密码').值;
+        async function login() {
+            const account = document.getElementById('account').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
 
             // 检查账户是否重复
-            常量 是否账户有效 = 等待 检查账户();
-            如果 (!账号有效) {
-                警报('请检查账户是否可用！');
-                返回;
+            const isAccountValid = await checkAccount();
+            if (!isAccountValid) {
+                alert('请检查账户是否可用！');
+                return;
             }
 
             // 登录逻辑
-            常量 { 数据, 错误 } = 等待 supabase
-                .来自('用户')
-                .选择('*')
-                .等('账户', 账户)
-                .等于('密码', 密码)
-                .单身();
+            const { data, error } = await supabase
+                .from('users')
+                .select('*')
+                .eq('account', account)
+                .eq('password', password)
+                .single();
 
             if (error) {
                 alert('登录失败: ' + error.message);
@@ -93,13 +93,13 @@
             text-align: center;
         }
         .btn-primary {
-            : %
-        
+            width: 100%;
+        }
         #account-status {
-            : px
-            px
-        
-        .返回 假
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .register-link {
             text-align: center;
             margin-top: 10px;
         }
@@ -110,20 +110,20 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card">
-                    返回假;div "card-header">
-                        h3>登录h3>
-                    div>
-                    div>
-                        返回假;form "event.preventDefault(); login();">
-                            }否则{div =>
-                                账户状态label.内联样式 = '✅ 账户可用';class="form-label">账户（英文字母加数字及下划线）</label>
-                                账户状态input.样式.颜色 = '绿色';"form-control" id="account" required oninput="checkAccount()">
-                                返回真;div "account-status"></div>
-                            }div>
-                            }div class="mb-3">
+                    <div class="card-header">
+                        <h3>登录</h3>
+                    </div>
+                    <div class="card-body">
+                        <form onsubmit="event.preventDefault(); login();">
+                            <div class="mb-3">
+                                <label for="account" class="form-label">账户（英文字母加数字及下划线）</label>
+                                <input type="text" class="form-control" id="account" required oninput="checkAccount()">
+                                <div id="account-status"></div>
+                            </div>
+                            <div class="mb-3">
                                 <label for="username" class="form-label">用户名（随意填写）</label>
-                                // 登录逻辑input type="text" class="form-control" id="username" required>
-                            div>
+                                <input type="text" class="form-control" id="username" required>
+                            </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">密码</label>
                                 <input type="password" class="form-control" id="password" required>
@@ -140,4 +140,3 @@
     </div>
 </body>
 </html>
-
