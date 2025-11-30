@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // 初始化 Supabase
+        const supabaseUrl = 'https://timliapjznvqcknfwyhn.supabase.co';
+        const supabaseKey = 'sb_publishable_p8ZVX_HRmTQKV7IkM8-ftQ_s7bnuCqr';
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+        // 生成随机账户 ID
+        function generateAccountId() {
+            return 'user_' + Math.random().toString(36).substring(2, 10).toUpperCase();
+        }
+
+        // 页面加载时生成账户 ID
+        window.onload = function() {
+            const accountId = generateAccountId();
+            document.getElementById('account-id').value = accountId;
+        };
+
+        // 注册函数
+        async function register() {
+            const accountId = document.getElementById('account-id').value;
+            const password = document.getElementById('password').value;
+
+            // 插入数据到数据库
+            const { data, error } = await supabase
+                .from('users')
+                .insert([{ account_id: accountId, password }]);
+
+            if (error) {
+                alert('注册失败：' + error.message);
+            } else {
+                alert('注册成功！账户 ID：' + accountId);
+                // 跳转到登录页面
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>注册</h2>
+        <input type="text" id="account-id" placeholder="账户 ID" readonly>
+        <input type="password" id="password" placeholder="密码" required>
+        <button onclick="register()">注册</button>
+        <p class="switch-link" onclick="window.location.href='index.html'">已有账户？立即登录</p>
+    </div>
+</body>
+</html>
