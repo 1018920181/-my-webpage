@@ -55,7 +55,7 @@
         <p>
             点击下方按钮登录系统，开始您的仓库管理之旅！
         </p>
-        <button class="btn btn-primary" onclick="window.location.href='login.html'">登录</button>
+        <button class="btn btn-primary" onclick="window.location.href='index.html'">登录</button>
     </div>
 </body>
 </html>
