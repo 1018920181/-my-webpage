@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // 初始化 Supabase
+        const supabaseUrl = 'https://timliapjznvqcknfwyhn.supabase.co';
+        const supabaseKey = 'sb_publishable_p8ZVX_HRmTQKV7IkM8-ftQ_s7bnuCqr';
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+        // 登录函数
+        async function login() {
+            const accountId = document.getElementById('account-id').value;
+            const password = document.getElementById('password').value;
+
+            // 查询数据库
+            const { data, error } = await supabase
+                .from('users')
+                .select('*')
+                .eq('account_id', accountId)
+                .eq('password', password);
+
+            if (error) {
+                alert('登录失败：' + error.message);
+            } else if (data.length > 0) {
+                alert('登录成功！');
+                // 跳转到目标页面
+                window.location.href = 'dashboard.html';
+            } else {
+                alert('账户 ID 或密码错误！');
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>登录</h2>
+        <input type="text" id="account-id" placeholder="账户 ID" required>
+        <input type="password" id="password" placeholder="密码" required>
+        <button onclick="login()">登录</button>
+        <p class="switch-link" onclick="window.location.href='register.html'">没有账户？立即注册</p>
+    </div>
+</body>
+</html>
