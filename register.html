@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // 初始化 Supabase
+        const supabaseUrl = 'https://timliapjznvqcknfwyhn.supabase.co';
+        const supabaseKey = 'sb_publishable_p8ZVX_HRmTQKV7IkM8-ftQ_s7bnuCqr';
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+        // 生成随机账户
+        function generateAccount() {
+            return 'user_' + Math.random().toString(36).substring(2, 10).toUpperCase();
+        }
+
+        // 页面加载时生成账户
+        window.onload = function() {
+            const account = generateAccount();
+            document.getElementById('account').value = account;
+        };
+
+        // 注册函数
+        async function register() {
+            const account = document.getElementById('account').value;
+            const password = document.getElementById('password').value;
+
+            // 验证密码格式（仅字母和数字）
+            const passwordRegex = /^[a-zA-Z0-9]+$/;
+            if (!passwordRegex.test(password)) {
+                alert('密码只能包含字母和数字！');
+                return;
+            }
+
+            // 插入数据到数据库
+            const { data, error } = await supabase
+                .from('users')
+                .insert([{ account, password }]);
+
+            if (error) {
+                alert('注册失败：' + error.message);
+            } else {
+                alert('注册成功！账户：' + account);
+                // 跳转到登录页面
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>注册</h2>
+        <input type="text" id="account" placeholder="账户" readonly>
+        <input type="password" id="password" placeholder="密码（仅字母和数字）" required>
+        <button onclick="register()">立即注册</button>
+        <a href="index.html" class="switch-link">已有账户？立即登录</a>
+    </div>
+</body>
+</html>

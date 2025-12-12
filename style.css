@@ -1,0 +1,88 @@
+/* 全局样式 */
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    color: #fff;
+}
+
+/* 容器样式 */
+.container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 30px;
+    width: 300px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+/* 标题样式 */
+.container h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #00d4ff;
+}
+
+/* 输入框样式 */
+.container input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 14px;
+}
+
+.container input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* 按钮样式 */
+.container button {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #00d4ff, #0072ff);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.container button:hover {
+    background: linear-gradient(90deg, #0072ff, #00d4ff);
+    transform: translateY(-2px);
+}
+
+/* 链接样式 */
+.switch-link {
+    margin-top: 15px;
+    color: #00d4ff;
+    cursor: pointer;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.switch-link:hover {
+    color: #0072ff;
+    text-decoration: underline;
+}
+
+/* 账户ID输入框（只读） */
+#account {
+    background: rgba(255, 255, 255, 0.05);
+    cursor: not-allowed;
+}
