@@ -12,16 +12,34 @@
         const supabaseKey = 'sb_publishable_p8ZVX_HRmTQKV7IkM8-ftQ_s7bnuCqr';
         const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-        // 生成随机账户
-        function generateAccount() {
-            return 'user_' + Math.random().toString(36).substring(2, 10).toUpperCase();
+        // 生成随机账户 ID（格式：user_XXXXXX，其中XXXXXX为6位随机字母和数字）
+        window.onload = function () {
+            generateID();
+        };
+
+        function generateAccountId() {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let result = 'user_';
+            for (let i = 0; i < 6; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+             document.getElementById('id-display').value = id;
         }
 
-        // 页面加载时生成账户
+        // 页面加载时生成账户 ID
         window.onload = function() {
-            const account = generateAccount();
-            document.getElementById('account').value = account;
+            const accountId = generateAccountId();
+            document.getElementById('account').value = accountId;
         };
+
+        //复制ID的函数
+         function copyID() {
+            const idInput = document.getElementById('id-display');
+            idInput.select();
+            idInput.setSelectionRange(0, 99999);
+            document.execCommand('copy');
+            alert('ID 已复制到剪贴板');
+        }
 
         // 注册函数
         async function register() {
@@ -43,7 +61,7 @@
             if (error) {
                 alert('注册失败：' + error.message);
             } else {
-                alert('注册成功！账户：' + account);
+                alert('注册成功！账户 ID：' + account);
                 // 跳转到登录页面
                 window.location.href = 'index.html';
             }
@@ -53,7 +71,8 @@
 <body>
     <div class="container">
         <h2>注册</h2>
-        <input type="text" id="account" placeholder="账户" readonly>
+        <input type="text" id="id-display" readonly placeholder="账户 ID"  >
+        <button onclick="copyID()">复制 ID</button>
         <input type="password" id="password" placeholder="密码（仅字母和数字）" required>
         <button onclick="register()">立即注册</button>
         <a href="index.html" class="switch-link">已有账户？立即登录</a>
